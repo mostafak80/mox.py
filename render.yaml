@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: currency-app
+    env: python
+    buildCommand: ""
+    startCommand: python MOX.py
+    envVars:
+      - key: FLASK_ENV
+        value: production
