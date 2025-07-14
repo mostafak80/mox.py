@@ -1,0 +1,116 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f8ff;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+form {
+    text-align: center;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.back-button {
+    display: block;
+    width: 120px;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: #0056b3;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* ✅ تحديد الصف عند الضغط */
+.tr-selected {
+    background-color: #d1ecf1;
+    transition: background-color 0.3s ease;
+}
+
+/* ✅ تحسين التفاعل عند المرور */
+table tr:hover {
+    background-color: #f1f9ff;
+    cursor: pointer;
+}
+
+/* ✅ صندوق عرض القيم المثبت في أعلى الصفحة */
+.fixed-summary {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff3cd;
+    color: #856404;
+    padding: 10px 25px;
+    border: 1px solid #ffeeba;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    z-index: 1000;
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+}

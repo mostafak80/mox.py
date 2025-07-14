@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>نتائج التحويل</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <script>
+    function copyColumnToClipboard(columnIndex) {
+      let table = document.querySelector('table');
+      let columnData = [];
+      for (let i = 1; i < table.rows.length - 1; i++) { // -1 عشان صف المجموع
+        let row = table.rows[i];
+        if (row.cells[columnIndex]) {
+          columnData.push(row.cells[columnIndex].innerText);
+        }
+      }
+      let columnText = columnData.join('\n');
+      navigator.clipboard.writeText(columnText)
+        .then(() => alert('تم نسخ عمود المبلغ المحول:\n' + columnText))
+        .catch(err => alert('حدث خطأ أثناء نسخ النص: ' + err));
+    }
+
+    function updateAccountSum() {
+      const rows = document.querySelectorAll("table tbody tr");
+      let accountSum = 0;
+      let egyptianSum = 0;
+      rows.forEach(row => {
+        if (row.classList.contains("tr-selected")) {
+          let accountCell = row.cells[7];
+          if (accountCell) {
+            let value = parseFloat(accountCell.innerText);
+            if (!isNaN(value)) {
+              accountSum += value;
+            }
+          }
+
+          let egyptianCell = row.cells[4];
+          if (egyptianCell) {
+            let value = parseFloat(egyptianCell.innerText);
+            if (!isNaN(value)) {
+              egyptianSum += value;
+            }
+          }
+        }
+      });
+
+      document.getElementById("account-sum").innerText = "السعر: " + accountSum.toFixed(2);
+      document.getElementById("egyptian-sum").innerText = "المصري: " + egyptianSum.toFixed(2);
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const rows = document.querySelectorAll("table tbody tr");
+      rows.forEach(row => {
+        row.addEventListener("click", function () {
+          row.classList.toggle("tr-selected");
+          updateAccountSum();
+        });
+      });
+    });
+
+    function goBack() {
+      window.history.back();
+    }
+  </script>
+</head>
+<body>
+  <!-- ✅ صندوق القيم المثبت -->
+  <div class="fixed-summary">
+    <div id="account-sum">السعر: 0</div>
+    <div id="egyptian-sum">المصري: 0</div>
+  </div>
+
+  <div class="container">
+    <h1>نتائج التحويل</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>البطاقة</th>
+          <th>المبلغ</th>
+          <th>العملة</th>
+          <th>التاجر</th>
+          <th>المبلغ بالمصري</th>
+          <th>التاريخ</th>
+          <th>المبلغ المحول</th>
+          <th>رقم الحساب</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for result in results %}
+        <tr>
+          <td>{{ result.card }}</td>
+          <td>{{ result.amount }}</td>
+          <td>{{ result.currency }}</td>
+          <td>{{ result.merchant }}</td>
+          <td>{{ result.egyptian_amount }}</td>
+          <td>{{ result.date }}</td>
+          <td>{{ result.converted_amount }}</td>
+          <td>
+            {% if result.merchant.strip() == "PUBGMobile" %}
+              {% if result.amount|float == 20.99 %}
+                35
+              {% elif result.amount|float == 41.99 %}
+                55
+              {% elif result.amount|float == 209.99 %}
+                265
+              {% elif result.amount|float == 419.99 %}
+                525
+              {% elif result.amount|float == 4199.99 %}
+                5250
+              {% elif result.amount|float == 1049.99 %}
+                1315
+              {% elif result.amount|float == 2099.99 %}
+                2625
+              {% else %}
+                {{ result.account }}
+              {% endif %}
+            {% else %}
+              {{ result.account }}
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td colspan="7">المجموع الكلي</td>
+          <td>{{ total_converted_amount }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- أزرار -->
+    <button onclick="copyColumnToClipboard(6)">تحديد المبلغ المحول</button>
+    <button class="back-button" onclick="goBack()">رجوع</button>
+  </div>
+</body>
+</html>
